@@ -1,5 +1,6 @@
 // Aluno: Érico Chen
 // Q1 - 30/08/2024 - 18:05
+// Q2 - 30/08/2024 - 18:15
 
 #include <stdio.h>
 
@@ -7,17 +8,21 @@ void intToBinary(int number);
 void intToOctal(int number);
 void intToHex(int number);
 void intToBCD(int number);
+void mostrarBinario(unsigned short valor);
+void decimalParaComplemento2(int number);
 
 int main(){
     int number;
 
-    printf("\nDigite o número decimal para conversão: ");
+    printf("\nDigite o número decimal(-32768 a 32767) para conversão: ");
     scanf("%d", &number);
      
     intToBinary(number);
     intToOctal(number);
     intToHex(number);
     intToBCD(number);
+
+    decimalParaComplemento2(number);
 
     return 0;
 }
@@ -109,4 +114,47 @@ void intToBCD(int number){
         number = number / 10;
     }
     printf("\n");
+}
+
+void mostrarBinario(unsigned short valor) {
+    for (int i = 15; i >= 0; i--) {
+        printf("%d", (valor >> i) & 1);
+    }
+    printf("\n");
+}
+
+
+void decimalParaComplemento2(int num) {
+    unsigned short valor;
+    if (num < -32768 || num > 32767) {
+        printf("Número fora do intervalo de 16 bits com sinal.\n");
+        return;
+    }
+
+    printf("Número decimal: %d\n", num);
+    
+    if (num >= 0) {
+        valor = (unsigned short)num;
+        printf("Representação binária direta (para números positivos): ");
+        mostrarBinario(valor);
+    } else {
+        printf("Passos para calcular o complemento a 2 para o número negativo:\n");
+        int numPositivo = -num;
+        printf("Número positivo correspondente: %d\n", numPositivo);
+
+        unsigned short binarioPositivo = (unsigned short)numPositivo;
+        printf("Representação binária do número positivo: ");
+        mostrarBinario(binarioPositivo);
+
+        unsigned short invertido = ~binarioPositivo;
+        printf("Bits invertidos: ");
+        mostrarBinario(invertido);
+
+        valor = invertido + 1;
+        printf("Complemento a 2 (invertido + 1): ");
+        mostrarBinario(valor);
+    }
+
+    printf("Representação final em complemento a 2 de 16 bits: ");
+    mostrarBinario(valor);
 }
