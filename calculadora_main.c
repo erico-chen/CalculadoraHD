@@ -2,6 +2,7 @@
 // Q1 - 30/08/2024 - 18:05
 // Q2 - 30/08/2024 - 18:15
 // Q2 modificacao - 30/08/2024 - 18:20
+// Q3 - 30/08/2024 - 18:30
 
 #include <stdio.h>
 #include <math.h>
@@ -12,9 +13,13 @@ void intToHex(int number);
 void intToBCD(int number);
 void mostrarBinario(unsigned short valor);
 void decimalParaComplemento2(int number);
+void printFloatBits(float number);
+void printDoubleBits(double number);
 
 int main(){
-    int number;
+    int number, number_1;
+    float float_number;
+    double double_number;
 
     printf("\nDigite o número decimal(-32768 a 32767) para conversão: ");
     scanf("%d", &number);
@@ -24,7 +29,19 @@ int main(){
     intToHex(number);
     intToBCD(number);
 
-    decimalParaComplemento2(number);
+    printf("\nDigite o número decimal(-32768 a 32767) para complemento a 2: ");
+    scanf("%d", &number_1);
+    decimalParaComplemento2(number_1);
+
+    printf("\nDigite um número real decimal para float: ");
+    scanf("%f", &float_number);
+
+    printFloatBits(float_number);
+
+    printf("\nDigite um número real decimal para double: ");
+    scanf("%lf", &double_number);
+
+    printDoubleBits(double_number);
 
     return 0;
 }
@@ -159,4 +176,57 @@ void decimalParaComplemento2(int number) {
 
     printf("Representação final em complemento a 2 de 16 bits: ");
     mostrarBinario(valor);
+}
+
+void printFloatBits(float number) {
+    unsigned int* p = (unsigned int*)&number;
+    unsigned int bits = *p;
+
+    
+    printf("Float: %f\n", number);
+    printf("Bits: ");
+    for (int i = 31; i >= 0; i--) {
+        printf("%d", (bits >> i) & 1);
+    }
+    printf("\n");
+
+    
+    int sinal = (bits >> 31) & 1;
+    printf("Bit de Sinal: %d\n", sinal);
+
+    int expoente = ((bits >> 23) & 0xFF) - 127;
+    printf("Expoente com viés: %d\n", expoente + 127);
+    printf("Expoente (com viés subtraído): %d\n", expoente);
+
+    unsigned int frac = bits & 0x7FFFFF;
+    printf("Fração: ");
+    for (int i = 22; i >= 0; i--) {
+        printf("%d", (frac >> i) & 1);
+    }
+    printf("\n");
+}
+void printDoubleBits(double number) {
+    unsigned long long* p = (unsigned long long*)&number;
+    unsigned long long bits = *p;
+
+    printf("Double: %lf\n", number);
+    printf("Bits: ");
+    for (int i = 63; i >= 0; i--) {
+        printf("%d", (bits >> i) & 1);
+    }
+    printf("\n");
+
+    int sinal = (bits >> 63) & 1;
+    printf("Bit de Sinal: %d\n", sinal);
+
+    int expoente = ((bits >> 52) & 0x7FF) - 1023;
+    printf("Expoente com viés: %d\n", expoente + 1023);
+    printf("Expoente (com viés subtraído): %d\n", expoente);
+
+    unsigned long long frac = bits & 0xFFFFFFFFFFFFF;
+    printf("Fração: ");
+    for (int i = 51; i >= 0; i--) {
+        printf("%d", (frac >> i) & 1);
+    }
+    printf("\n");
 }
