@@ -1,8 +1,10 @@
 // Aluno: Érico Chen
 // Q1 - 30/08/2024 - 18:05
 // Q2 - 30/08/2024 - 18:15
+// Q2 modificacao - 30/08/2024 - 18:20
 
 #include <stdio.h>
+#include <math.h>
 
 void intToBinary(int number);
 void intToOctal(int number);
@@ -124,22 +126,22 @@ void mostrarBinario(unsigned short valor) {
 }
 
 
-void decimalParaComplemento2(int num) {
+void decimalParaComplemento2(int number) {
     unsigned short valor;
-    if (num < -32768 || num > 32767) {
+    if (number < -32768 || number > 32767) {
         printf("Número fora do intervalo de 16 bits com sinal.\n");
         return;
     }
 
-    printf("Número decimal: %d\n", num);
+    printf("Número decimal: %d\n", number);
     
-    if (num >= 0) {
-        valor = (unsigned short)num;
+    if (number >= 0) {
+        valor = (unsigned short)number;
         printf("Representação binária direta (para números positivos): ");
         mostrarBinario(valor);
     } else {
         printf("Passos para calcular o complemento a 2 para o número negativo:\n");
-        int numPositivo = -num;
+        int numPositivo = -number;
         printf("Número positivo correspondente: %d\n", numPositivo);
 
         unsigned short binarioPositivo = (unsigned short)numPositivo;
